@@ -1,0 +1,14 @@
+[Event "IN104 CS Project"]
+[Site "ENSTA ParisTech, Palaiseau, FRA"]
+[GameType “21,W,8,8,N2,0”] {Whites begin}
+[Date "Tue Mar 22 15:34:09 2016"]
+[Round "?"]
+[White "Tristboule"]
+[WhiteType "Program"]
+[Black "Guiguiboule"]
+[BlackType "Program"]
+[Result "0-1"] {Black (Guiguiboule) wins}
+[WhiteTime "0.012909173965454102"]
+[BlackTime "0.015131711959838867"]
+
+1.22-18 8-13 2.20-16 13x20 3.18-14 9x18 4.23x14 10x17 5.21x14 4-8 6.14-9 6x13 7.25-21 1-6 8.26-23 0-4 9.31-26 11-15 10.30-25 7-10 11.21-16 6-9 12.23-19 8-12 13.26-23 12x21x30 14.29-25 20x29 15.25-21 29-25 16.28-24 25x16 17.24-20 9-14 18.23-18 14x23 19.27x18x11 4-8 20.19-15 10x19 21.11-7 3x10  0-1 *

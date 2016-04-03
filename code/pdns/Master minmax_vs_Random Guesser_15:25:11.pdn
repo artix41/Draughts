@@ -1,0 +1,14 @@
+[Event "IN104 CS Project"]
+[Site "ENSTA ParisTech, Palaiseau, FRA"]
+[GameType “21,W,8,8,N2,0”] {Whites begin}
+[Date "Sat Apr  2 15:25:10 2016"]
+[Round "?"]
+[White "Master minmax"]
+[WhiteType "Program"]
+[Black "Random Guesser"]
+[BlackType "Program"]
+[Result "1-0"] {White (Master minmax) wins}
+[WhiteTime "0.9030323028564453"]
+[BlackTime "0.020867586135864258"]
+
+1.20-16 10-14 2.23-19 8-13 3.24-20 14-18 4.22x15 11x18 5.16-12 6-10 6.21-16 4-8 7.28-24 18-23 8.27x18 2-6 9.25-21 7-11 10.31-27 10-14 11.26-23 13-17 12.29-25 11-15 13.18x11 9-13 14.16x9x18 5-9 15.21x14x5 0x9 16.12x5x14 6-10 17.14x7 3x10 18.25-22 10-14 19.18x9 1-6 20.9x2  1-0 *
