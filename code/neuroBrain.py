@@ -12,6 +12,8 @@ from keras.models import Sequential
 from keras.layers.core import Dense, Dropout, Activation
 from keras.optimizers import RMSprop
 
+INFINI = 100000000
+
 class NeuroBrain:
     def __init__(self, name):
         self.name = name
@@ -23,7 +25,7 @@ class NeuroBrain:
         self.createNeuralNetwork()
         self.gamma = 0.9 # since it may take several moves to goal, making gamma high
         self.epsilon = 0.3 # epsilon-greedy algorithm
-        self.step = "test"
+        self.step = "train"
 
     def createNeuralNetwork(self):
         self.model = Sequential()
@@ -64,32 +66,58 @@ class NeuroBrain:
 
         return choice
 
+    def getMinUR(self, gameState):
+        if not gameState.getStateMoveDict():
+            return (100,100)
+        possibleMoves = list(gameState.getStateMoveDict().values())
+        minU = INFINI
+        for action in possibleMoves:
+            newGameState = gameState.doMove(action)
+            reward = self.getReward(newGameState)
+            if reward == -100:
+                return (-100,-100)
+            if reward + self.gamma * self.predict(newGameState) < minU:
+                minU = reward + self.gamma * self.predict(newGameState)
+                minReward = reward
+        return (minU,-1)
+
+    def getListNextUR(self, gameState, possibleMoves):
+        listU = []
+        listR = []
+        for action in possibleMoves:
+            newGameState = gameState.doMove(action)
+            newU, newR = self.getMinUR(newGameState)
+            listU.append(newU)
+            listR.append(newR)
+        return (listU, listR)
+
     def nextMoveTrain(self, gameState):
         possibleMoves = list(gameState.getStateMoveDict().values())
         U = self.predict(gameState)
         print ("U : " + str(U))
 
+        newU = []
         if (random.random() < self.epsilon): #choose random action
             action = possibleMoves[np.random.randint(0,len(possibleMoves))]
+            newGameState = gameState.doMove(action)
+            newU, reward = self.getMinUR(newGameState)
         else:
-            newU = []
-            for action in possibleMoves:
-                newGameState = gameState.doMove(action)
-                U_a = self.predict(newGameState)
-                newU.append(self.getReward(gameState.doMove(action)) + self.gamma * U_a)
-            print("New U : ", end="")
-            print(newU)
-            action = possibleMoves[np.argmax(newU)]
+            newUR = self.getListNextUR(gameState, possibleMoves) # newUR = (listOfU, listOfReward)
+            print("New UR : ", end="")
+            print(newUR)
+            iBestMove = np.argmax(newUR[0])
+            reward = newUR[1][iBestMove]
+            newU = newUR[0][iBestMove]
+            action = possibleMoves[iBestMove]
 
         print("Action selected : " + str(action.toPDN()))
-        newGameState = gameState.doMove(action)
-        reward = self.getReward(newGameState)
-        newU = self.predict(newGameState)
-        if reward == -1:
-            update = reward + self.gamma * newU
-        else:
+
+        if reward != -1:
             update = reward
+        else:
+            update = reward + self.gamma * newU
         y = np.array([update]).reshape(1,1)
+        print("Update : " + str(update))
 
         print("Fitting...")
         self.fit(gameState, y)
@@ -128,6 +156,8 @@ class NeuroBrain:
             if hasWon:
                 return winningReward
             else:
+                #time.sleep(2)
+                print ("================\nLOOOOOOOOOOOOOOOOSE\n===================")
                 return -winningReward
         else:
             return -1

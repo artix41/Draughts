@@ -11,7 +11,7 @@ from neuroBrain import *
 
 def test():
     config = {  'nRows': 8, # size of the board
-                'nPieces': 12, # number of pieces at the beginning of the game (should be a multiple of nRows < nRows²/2)
+                'nPieces': 12, # number of pieces at the beginning of the game (should be a multiple of nRows < nRows**2/2)
                 'whiteStarts': True,
              }
 
@@ -21,7 +21,7 @@ def test():
     ia1.loadWeights()
     start = time.time()
     nbrWin = 0
-    for i in range(1):
+    for i in range(10):
         print ("=================== Game " + str(i) + " ================")
 
         game = Game(ia1, 10000, ia2, 10000, config, 1000) # syntax : Game(ia1, ia2, config [, Nlimit = 150])
@@ -38,6 +38,7 @@ def test():
         game.gameState.boardState.debug = False
 
         pdn = game.runGame()
+        time.sleep(2)
 
     ia1.saveWeights()
 
