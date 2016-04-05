@@ -1,0 +1,31 @@
+layers:
+- W_constraint: null
+  W_regularizer: null
+  activation: linear
+  activity_regularizer: null
+  b_constraint: null
+  b_regularizer: null
+  cache_enabled: true
+  custom_name: dense
+  init: lecun_uniform
+  input_dim: null
+  input_shape: !!python/tuple [164]
+  name: Dense
+  output_dim: 164
+  trainable: true
+- {activation: relu, cache_enabled: true, custom_name: activation, name: Activation,
+  trainable: true}
+- {W_constraint: null, W_regularizer: null, activation: linear, activity_regularizer: null,
+  b_constraint: null, b_regularizer: null, cache_enabled: true, custom_name: dense,
+  init: lecun_uniform, input_dim: null, name: Dense, output_dim: 150, trainable: true}
+- {activation: relu, cache_enabled: true, custom_name: activation, name: Activation,
+  trainable: true}
+- {W_constraint: null, W_regularizer: null, activation: linear, activity_regularizer: null,
+  b_constraint: null, b_regularizer: null, cache_enabled: true, custom_name: dense,
+  init: lecun_uniform, input_dim: null, name: Dense, output_dim: 1, trainable: true}
+- {activation: linear, cache_enabled: true, custom_name: activation, name: Activation,
+  trainable: true}
+loss: mean_squared_error
+name: Sequential
+optimizer: {epsilon: 1.0e-06, lr: 0.0010000000474974513, name: RMSprop, rho: 0.8999999761581421}
+sample_weight_mode: null
