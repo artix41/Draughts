@@ -1,9 +1,9 @@
 import signal
 import time
 import math
-from .cell import *
-from .gameState import *
-from .deadline import *
+from .cell import Cell
+from .gameState import GameState
+from .deadline import Deadline
 
 # Register an handler for the timeout
 def playTimeOutHandler(signum, frame):

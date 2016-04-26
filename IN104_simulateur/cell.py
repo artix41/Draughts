@@ -1,33 +1,30 @@
-from enum import Enum
-   
-class Cell(Enum):
+class Cell():
     ''' This enumeration represents the possible states of a cell on the board '''
-    empty = (None,None)
-    w = (True,False)
-    W = (True,True)
-    b = (False,False)
-    B = (False,True)
-         
-    def isWhite(self):
-        return self is Cell.w or self is Cell.W          
+    empty = 46
+    w = 119
+    W = 87
+    b = 98
+    B = 66  
+                            
+    def isWhite(c):
+        return c == Cell.w or c == Cell.W          
         
-    def isBlack(self):
-        return self is Cell.b or self is Cell.B     
+    def isBlack(c):
+        return c == Cell.b or c == Cell.B     
       
-    def isMan(self):
-        return self is Cell.w or self is Cell.b   
-      
-    def isKing(self):
-        return self.value[1]        
+    def isMan(c):
+        return c == Cell.w or c == Cell.b         
+        
+    def isKing(c):
+        return c == Cell.W or c == Cell.B        
     
-    def invertColor(self):
-        return Cell.empty if self is Cell.empty else Cell( (not self.value[0], self.isKing() ) )
+    def invertColor(c):
+        if c == Cell.empty: return Cell.empty 
+        return v + 42*(1-v%2) - 21
         
-    def promoted(self):
-        return Cell.empty if self is Cell.empty else Cell( (self.value[0], True) )
+    def promoted(c):
+        assert(Cell.isMan(c))
+        return c-32
         
-    def __str__(self):
-        if self is Cell.empty: 
-            return '.'
-        else:
-            return self.name        
+    def toString(c):
+        return chr(c)   
