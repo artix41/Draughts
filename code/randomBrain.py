@@ -5,8 +5,8 @@ from IN104_simulateur.move import *
 from random import randint
 
 class RandomBrain:
-    def __init__(self, name):
-        self.name = name
+    def __init__(self):
+        self.name = "RandomBrain"
         self.computingTimes = []
 
     def play(self, gameState, timeLimit):

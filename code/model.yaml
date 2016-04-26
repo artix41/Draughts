@@ -1,3 +1,4 @@
+class_mode: categorical
 layers:
 - W_constraint: null
   W_regularizer: null
@@ -9,7 +10,7 @@ layers:
   custom_name: dense
   init: lecun_uniform
   input_dim: null
-  input_shape: !!python/tuple [164]
+  input_shape: !!python/tuple [134]
   name: Dense
   output_dim: 164
   trainable: true
@@ -28,4 +29,3 @@ layers:
 loss: mean_squared_error
 name: Sequential
 optimizer: {epsilon: 1.0e-06, lr: 0.0010000000474974513, name: RMSprop, rho: 0.8999999761581421}
-sample_weight_mode: null

@@ -25,13 +25,13 @@ class NeuroBrain:
         self.createNeuralNetwork()
         self.gamma = 0.9 # since it may take several moves to goal, making gamma high
         self.epsilon = 0.3 # epsilon-greedy algorithm
-        self.normalReward = -5
+        self.normalReward = -1
         self.winningReward = 100
         self.step = "test"
 
     def createNeuralNetwork(self):
         self.model = Sequential()
-        self.model.add(Dense(164, init='lecun_uniform', input_shape=(164,)))
+        self.model.add(Dense(164, init='lecun_uniform', input_shape=(134,)))
         self.model.add(Activation('relu'))
         #self.model.add(Dropout(0.2))
 
@@ -165,24 +165,26 @@ class NeuroBrain:
         nbrWhites, nbrBlacks, nbrKingsBlack, nbrKingsWhite = 0,0,0,0
         for cell in listCells:
             if cell == Cell.empty:
-                tInput.append([1, 0, 0, 0, 0])
+                tInput.append([0, 0, 0, 0])
             if cell == Cell.b:
                 nbrBlacks += 1
-                tInput.append([0, 1, 0, 0, 0])
+                tInput.append([1, 0, 0, 0])
             if cell == Cell.B:
                 nbrBlacks += 1
                 nbrKingsBlack += 1
-                tInput.append([0, 0, 1, 0, 0])
+                tInput.append([ 0, 1, 0, 0])
             if cell == Cell.w:
                 nbrWhites += 1
-                tInput.append([0, 0, 0, 1, 0])
+                tInput.append([ 0, 0, 1, 0])
             if cell == Cell.W:
                 nbrKingsWhite += 1
                 nbrWhites += 1
-                tInput.append([0, 0, 0, 0, 1])
-        tInput = np.array(tInput).reshape(160)
+                tInput.append([0, 0, 0, 1])
+        tInput = np.array(tInput).reshape(128)
         tInput = np.concatenate([tInput, [nbrWhites], [nbrBlacks], [nbrKingsWhite], [nbrKingsBlack]])
-        return tInput.reshape(1,164)
+        tInput = np.concatenate([tInput, [nbrWhites + nbrBlacks + nbrKingsWhite + nbrKingsBlack]])
+        tInput = np.concatenate([tInput, [nbrWhites - nbrBlacks + 3*(nbrKingsWhite - nbrKingsBlack)]])
+        return tInput.reshape(1,134)
 
     def predict(self, gameState):
         return self.model.predict(self.getInput(gameState), batch_size=1)
@@ -193,7 +195,7 @@ class NeuroBrain:
     def saveWeights(self, filename='weights.h5'):
         self.model.save_weights(filename)
 
-    def loadWeights(self, filename='weights_01.h5'):
+    def loadWeights(self, filename='weights.h5'):
         self.model.load_weights(filename)
 
     def __str__(self):

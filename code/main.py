@@ -7,7 +7,8 @@ from IN104_simulateur.cell import Cell
 from manualBrain import *
 from randomBrain import *
 from minMaxBrain import *
-from neuroBrain import *
+from alphaBetaBrain import *
+#from neuroBrain import *
 
 def test():
     config = {  'nRows': 8, # size of the board
@@ -15,10 +16,10 @@ def test():
                 'whiteStarts': True,
              }
 
-    ia1 = NeuroBrain("NeuroBrain")
-    ia2 = RandomBrain("Random Guesser")
+    ia1 = AlphaBetaBrain()
+    ia2 = RandomBrain()
 
-    ia1.loadWeights()
+    #ia1.loadWeights()
     start = time.time()
     nbrWin = 0
     for i in range(10):
@@ -40,7 +41,7 @@ def test():
         pdn = game.runGame()
         time.sleep(2)
 
-    ia1.saveWeights()
+    #ia1.saveWeights()
 
     # Save logs and pdn in text files
     print ("======================= Time ========================")
