@@ -12,7 +12,7 @@ from alphaBetaBrain import *
 from timerAlphaBetaBrain import *
 from minMaxNeuroBrain import *
 from neuroBrain import *
-#from neuroBrain import *
+from deepNeuroBrain import *
 
 def test():
     config = {  'nRows': 8, # size of the board
@@ -21,7 +21,7 @@ def test():
              }
 
     ia1 = NeuroBrain()
-    ia2 = RandomBrain()
+    ia2 = AlphaBetaBrain()
 
     ia1.loadWeights()
     start = time.time()
@@ -65,8 +65,8 @@ def test():
             import matplotlib.pyplot as plt
             plt.plot(percentWin, color="red")
             plt.plot(percentLose, color="blue")
+            plt.savefig("stats.png")
             plt.show()
-            plt.savefig("stat.png")
             break
 
     # Save logs and pdn in text files
