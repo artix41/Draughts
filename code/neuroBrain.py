@@ -15,8 +15,8 @@ from keras.optimizers import RMSprop
 INFINI = 100000000
 
 class NeuroBrain:
-    def __init__(self, name):
-        self.name = name
+    def __init__(self):
+        self.name = "neuroBrain"
         self.computingTimes = []
         self.U = np.array([0]).reshape(1,1)
 
@@ -27,20 +27,17 @@ class NeuroBrain:
         self.epsilon = 0.3 # epsilon-greedy algorithm
         self.normalReward = -1
         self.winningReward = 100
-        self.step = "test"
+        self.step = "train"
 
     def createNeuralNetwork(self):
         self.model = Sequential()
-        self.model.add(Dense(164, init='lecun_uniform', input_shape=(134,)))
-        self.model.add(Activation('relu'))
-        #self.model.add(Dropout(0.2))
+        self.model.add(Dense(100, activation="relu", init='lecun_uniform', input_shape=(134,)))
 
-        self.model.add(Dense(150, init='lecun_uniform'))
-        self.model.add(Activation('relu'))
-        #self.model.add(Dropout(0.2))
+        self.model.add(Dense(50, activation="relu", init='lecun_uniform'))
+
+        self.model.add(Dense(25, activation="relu", init='lecun_uniform'))
 
         self.model.add(Dense(1, init='lecun_uniform'))
-        self.model.add(Activation('linear')) #linear output so we can have range of real-valued outputs
 
         rms = RMSprop()
         self.model.compile(loss='mse', optimizer=rms)

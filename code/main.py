@@ -8,6 +8,9 @@ from manualBrain import *
 from randomBrain import *
 from minMaxBrain import *
 from alphaBetaBrain import *
+from timerAlphaBetaBrain import *
+from minMaxNeuroBrain import *
+from neuroBrain import *
 #from neuroBrain import *
 
 def test():
@@ -16,13 +19,13 @@ def test():
                 'whiteStarts': True,
              }
 
-    ia1 = AlphaBetaBrain()
-    ia2 = RandomBrain()
+    ia1 = NeuroBrain()
+    ia2 = AlphaBetaBrain()
 
     #ia1.loadWeights()
     start = time.time()
     nbrWin = 0
-    for i in range(10):
+    for i in range(1):
         print ("=================== Game " + str(i) + " ================")
 
         game = Game(ia1, 10000, ia2, 10000, config, 1000) # syntax : Game(ia1, ia2, config [, Nlimit = 150])

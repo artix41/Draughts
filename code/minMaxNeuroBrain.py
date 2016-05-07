@@ -5,16 +5,20 @@ from IN104_simulateur.move import *
 from random import randint, random
 from IN104_simulateur.cell import Cell
 
+import numpy as np
+from keras.models import Sequential, model_from_yaml
+from keras.layers.core import Dense, Dropout, Activation
+from keras.optimizers import RMSprop
+
 INFINI = 10000000
 MAX_STATE = 0
 MIN_STATE = 1
 
-class MinMaxBrain:
-    def __init__(self, name):
-        self.name = name
+class MinMaxNeuroBrain:
+    def __init__(self):
+        self.name = "minMaxNeuroBrain"
         self.computingTimes = []
-        self.maxDeep = 4
-        self.model = loadNN("model.yaml", "weights.h5")
+        self.model = self.loadNN("model.yaml", "weights.h5")
 
 
     def play(self, gameState, timeLimit):
@@ -69,7 +73,7 @@ class MinMaxBrain:
 
     def loadNN(self, model_file, weights_file):
         with open(model_file, "r") as f:
-            yaml_string = f.readlines()
+            yaml_string = f.read()
             model = model_from_yaml(yaml_string)
         model.load_weights(weights_file)
         return model
