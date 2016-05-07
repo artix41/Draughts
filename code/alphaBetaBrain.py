@@ -77,9 +77,9 @@ class AlphaBetaBrain:
             nbrWhites = 0
             nbrBlacks = 0
             for cell in gameState.boardState.cells:
-                if cell.isBlack():
+                if Cell.isBlack(cell):
                      nbrBlacks += 1
-                elif cell.isWhite():
+                elif Cell.isWhite(cell):
                      nbrWhites += 1
             return nbrWhites - nbrBlacks
 
