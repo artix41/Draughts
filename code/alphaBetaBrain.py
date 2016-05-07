@@ -14,14 +14,17 @@ class AlphaBetaBrain:
         self.name = "AlphaBetaBrain"
         self.computingTimes = []
         self.maxDeep = 5
+        self.verbose = 0
 
     def play(self, gameState, timeLimit):
         possibleMoves = gameState.getStateMoveDict()
-        print("Authorized moves : ")
-        for m in possibleMoves.values(): print(m.toPDN())
+        if self.verbose:
+            print("Authorized moves : ")
+            for m in possibleMoves.values(): print(m.toPDN())
         try:
             weight, move = self.alphaBeta(gameState, 1, MAX_STATE, -INFINI, INFINI)
-            print(self.name + " plays move : " + move.toPDN())
+            if self.verbose:
+                print(self.name + " plays move : " + move.toPDN())
 
             choice = gameState.doMove(move, inplace = False)
             if str(choice) not in possibleMoves.keys(): raise Exception

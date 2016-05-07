@@ -24,12 +24,14 @@ class NeuroBrain:
         self.model = None
         self.createNeuralNetwork()
         self.gamma = 0.9 # since it may take several moves to goal, making gamma high
-        self.epsilon = 0.3 # epsilon-greedy algorithm
+        self.epsilon = 0.2 # epsilon-greedy algorithm
         self.normalReward = -1
         self.winningReward = 100
         self.step = "train"
+        self.verbose = 0
 
     def createNeuralNetwork(self):
+        print("Create the neural network...")
         self.model = Sequential()
         self.model.add(Dense(100, activation="relu", init='lecun_uniform', input_shape=(134,)))
 
@@ -44,27 +46,26 @@ class NeuroBrain:
         yaml_string = self.model.to_yaml()
         with open("model.yaml", "w") as f:
             f.write(yaml_string)
+        print("[+] Neural network created")
 
     def play(self, gameState, timeLimit):
         possibleMoves = gameState.getStateMoveDict()
-        print("Authorized moves : ")
-        for m in possibleMoves.values(): print(m.toPDN())
+        if self.verbose:
+            print("Authorized moves : ")
+            for m in possibleMoves.values(): print(m.toPDN())
         string = ""
-        while True:
-            try:
-                if self.step == "train":
-                    string = self.nextMoveTrain(gameState)
-                else:
-                    string = self.nextMoveTest(gameState)
-                #print(self.name + " plays move : " + string)
+        try:
+            if self.step == "train":
+                string = self.nextMoveTrain(gameState)
+            else:
+                string = self.nextMoveTest(gameState)
 
-                move = Move.fromPDN(string)
-                choice = gameState.doMove(move, inplace = False)
-                if str(choice) not in possibleMoves.keys(): raise Exception
-                break
-            except Exception:
-                print(string+' is an invalid move !')
-                raise
+            move = Move.fromPDN(string)
+            choice = gameState.doMove(move, inplace = False)
+            if str(choice) not in possibleMoves.keys(): raise Exception
+        except Exception:
+            print(string+' is an invalid move !')
+            raise
 
         return choice
 
@@ -96,7 +97,8 @@ class NeuroBrain:
     def nextMoveTrain(self, gameState):
         possibleMoves = list(gameState.getStateMoveDict().values())
         U = self.predict(gameState)
-        print ("U : " + str(U))
+        if self.verbose or True:
+            print ("U : " + str(U))
 
         newU = []
         if (random.random() < self.epsilon): #choose random action
@@ -105,26 +107,29 @@ class NeuroBrain:
             newU, reward = self.getMinUR(newGameState)
         else:
             newUR = self.getListNextUR(gameState, possibleMoves) # newUR = (listOfU, listOfReward)
-            print("New UR : ", end="")
-            print(newUR)
             iBestMove = np.argmax(newUR[0])
+            if self.verbose:
+                print("New UR : ", newUR)
+                print("iBestMove : ", iBestMove)
             reward = newUR[1][iBestMove]
             newU = newUR[0][iBestMove]
             action = possibleMoves[iBestMove]
 
-        print("Action selected : " + str(action.toPDN()))
+        if self.verbose:
+            print("Action selected : " + str(action.toPDN()))
 
         if reward != self.normalReward:
             update = reward
         else:
             update = reward + self.gamma * newU
         y = np.array([update]).reshape(1,1)
-        print("Update : " + str(update))
 
-        print("Fitting...")
+        if self.verbose:
+            print("Update : " + str(update))
+            print("Fitting...")
+
         self.fit(gameState, y)
         #time.sleep(0.04)
-        print ("epsilon : " + str(self.epsilon))
 
         return action.toPDN()
 
@@ -150,8 +155,6 @@ class NeuroBrain:
             if hasWon:
                 return self.winningReward
             else:
-                #time.sleep(2)
-                #print ("================\nLOOOOOOOOOOOOOOOOSE\n===================")
                 return -self.winningReward
         else:
             return self.normalReward
@@ -187,10 +190,10 @@ class NeuroBrain:
         return self.model.predict(self.getInput(gameState), batch_size=1)
 
     def fit(self, gameState, y):
-        return self.model.fit(self.getInput(gameState), y, batch_size=1, nb_epoch=1, verbose=1)
+        return self.model.fit(self.getInput(gameState), y, batch_size=1, nb_epoch=1, verbose=self.verbose)
 
     def saveWeights(self, filename='weights.h5'):
-        self.model.save_weights(filename)
+        self.model.save_weights(filename, overwrite=True)
 
     def loadWeights(self, filename='weights.h5'):
         self.model.load_weights(filename)

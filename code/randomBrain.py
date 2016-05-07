@@ -8,18 +8,22 @@ class RandomBrain:
     def __init__(self):
         self.name = "RandomBrain"
         self.computingTimes = []
+        self.verbose = 0
 
     def play(self, gameState, timeLimit):
         possibleMoves = gameState.getStateMoveDict()
-        print("Authorized moves : ")
-        for m in possibleMoves.values(): print(m.toPDN())
+        if self.verbose:
+            print("Authorized moves : ")
+            for m in possibleMoves.values(): print(m.toPDN())
         string = ""
         while True:
             try:
-                print(self.name + " plays move : ", end=" ")
+                if self.verbose:
+                    print(self.name + " plays move : ", end=" ")
                 #time.sleep(1)
                 string = self.randomString(list(possibleMoves.values()))
-                print(string)
+                if self.verbose:
+                    print(string)
 
                 move = Move.fromPDN(string)
                 choice = gameState.doMove(move, inplace = False)
